@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    #modle{
+        width: 200px;
+        margin-left: 200px;
+        top:20%;
+        height: 200px;
+       
+    
+        display: none;
+         z-index: 1500;
+    }
+</style>
+<body>
+    <h1>Infinite Loading</h1>
+    <div class="div" id="div" style="height: 900px;">
+
+    </div>
+    <div id="modle">
+        <button>close</button>
+    </div>
+    
+</body>
+<script>
+    const div=document.getElementById("div")
+    const modle=document.getElementById("modle")
+    let Data=[]
+    let page=1
+    function fectch(p){
+        fetch(`https://jsonplaceholder.typicode.com/comments?_limit=10&_page=${p}`)
+        .then(res=>res.json())
+        .then(data=>{
+            Data.push(...data)
+            console.log(Data)
+            append()
+        })
+      
+    }
+    fectch(page)
+    function append(){
+    div.innerHTML="";
+    Data.map(el=>{
+        const Div=document.createElement("div")
+        Div.addEventListener("click",()=>{
+          modle.style.display="block"
+        })
+        const h1=document.createElement("h4")
+        h1.innerText=el.id
+       const p=document.createElement("p")
+       p.innerHTML=el.body
+       Div.append(h1,p)
+     div.append(Div)
+    })
+   }
+   window.addEventListener("scroll",()=>{
+    if(window.innerHeight+window.screenY+div.scrollHeight){
+        
+        page=page+1
+        console.log(page)
+        fectch((page))
+    }
+   })
+    
+    
+</script>
+</html>
