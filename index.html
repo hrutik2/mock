@@ -6,30 +6,41 @@
     <title>Document</title>
 </head>
 <style>
-    #modle{
-        width: 200px;
-        margin-left: 200px;
-        top:20%;
-        height: 200px;
-       
-    
-        display: none;
-         z-index: 1500;
-    }
+   #modal {
+            width: 200px;
+            margin-left: 200px;
+            top: 20%;
+            height: 200px;
+            display: none;
+            z-index: 2000;
+            position: fixed; 
+           
+        }
+
+        
+        #modal button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+        }
 </style>
 <body>
     <h1>Infinite Loading</h1>
     <div class="div" id="div" style="height: 900px;">
 
     </div>
+    
+    
     <div id="modle">
-        <button>close</button>
+        <button id="b">close</button>
     </div>
     
 </body>
 <script>
     const div=document.getElementById("div")
     const modle=document.getElementById("modle")
+    const b=document.getElementById("b")
     let Data=[]
     let page=1
     function fectch(p){
@@ -42,6 +53,9 @@
         })
       
     }
+    b.addEventListener("click",()=>{
+        modle.style.display="none"
+    })
     fectch(page)
     function append(){
     div.innerHTML="";
@@ -49,6 +63,7 @@
         const Div=document.createElement("div")
         Div.addEventListener("click",()=>{
           modle.style.display="block"
+          show(el)
         })
         const h1=document.createElement("h4")
         h1.innerText=el.id
@@ -57,6 +72,16 @@
        Div.append(h1,p)
      div.append(Div)
     })
+   }
+   function show( comment){
+
+    const p=document.createElement("p")
+     p.innerText=("Email"+":"+comment.email)
+     const p2=document.createElement("p")
+     p2.innerText=("Name"+":"+comment.name)
+     const p3=document.createElement("p")
+       p3.innerHTML=comment.body
+    modle.append(p,p2,p3)
    }
    window.addEventListener("scroll",()=>{
     if(window.innerHeight+window.screenY+div.scrollHeight){
